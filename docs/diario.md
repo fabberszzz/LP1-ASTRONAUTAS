@@ -163,9 +163,53 @@ O plano da IA já estava correto desde a primeira versão, apenas tive um bug de
 ## Missão 3: RELATORIO
 
 - Primeira mensagem:
+Este programa em C++11 controla astronautas e voos de uma agência espacial. Ele lê comandos da entrada padrão. As classes Astronauta, Voo e Agencia estão em src/main.cpp. Os testes anteriores (Parte 1 e Missão 2) estão funcionando corretamente.
+
+Quero adicionar um comando novo: RELATORIO.
+Ele deve imprimir exatamente a palavra "RELATORIO" seguida de nove linhas informando o estado atual, neste formato exato:
+
+RELATORIO
+voos planejados: 0
+voos em curso: 0
+voos finalizados com sucesso: 1
+voos finalizados com explosao: 2
+astronautas cadastrados: 4
+astronautas vivos: 2
+astronautas mortos: 2
+astronauta mais experiente: 111 Ana Maria (voos lancados: 1)
+taxa de sucesso: 33%
+
+Regras importantes para este comando:
+1. Experiência de um astronauta: número de voos já lançados em que ele estava a bordo. Voos planejados não contam. Astronauta morto continua contando. Em caso de empate, vale o cadastrado primeiro. Se ninguém voou: "astronauta mais experiente: (nenhum)".
+2. Taxa de sucesso: parte inteira da fórmula (sucessos * 100 / finalizados), onde "finalizados" são os voos com sucesso mais os com explosão. Se não houver voos finalizados: "taxa de sucesso: (nenhum voo finalizado)".
+3. Cuidado com o salvamento/carregamento da Missão 2: se a experiência for armazenada de forma interna, ela não pode se perder ao salvar e carregar os dados.
+
+Não mude nenhum comando que já existe nem a saída deles. Não use nada fora da biblioteca padrão.
+
+Vou conferir com "bash testes/testar.sh missao3" e depois com "bash testes/testar.sh parte1".
+
+Antes de editar qualquer arquivo, me diga quais arquivos e quais métodos você vai criar ou alterar, e por quê.
+
 - O plano, resumido:
+Arquivo modificado: apenas `src/main.cpp`.
+Atributo novo na classe `Astronauta`: `int experiencia` (inicializa 0), com `getExperiencia()` e `setExperiencia(int)`.
+Método alterado em `Agencia::lancarVoo()`: incrementa a experiência de cada astronauta a bordo antes de embarcar.
+Método alterado em `Agencia::salvar()`: inclui `experiencia` na linha `ASTRONAUTA` do arquivo.
+Método alterado em `Agencia::carregar()`: lê `experiencia` da linha `ASTRONAUTA` e a atribui ao astronauta.
+Método novo na classe `Agencia`: `void relatorio()` — calcula e imprime as 9 linhas do relatório (contagem de voos por estado, contagem de astronautas, astronauta mais experiente com desempate pelo cadastro, e taxa de sucesso).
+Método alterado em `main()`: adição do tratamento do comando `RELATORIO`.
+Por que não criar novas classes: tudo é uma extensão natural das classes existentes; `relatorio()` pertence à `Agencia` que já coordena todos os dados.
+
+- Mudei algo no plano antes de liberar?
+Não. O plano estava completo e correto.
+
 - Resultado de `testar.sh missao3` e de `testar.sh parte1`:
+missao3: Os cinco testes passaram corretamente.
+parte1: Todos os testes passaram corretamente.
+
 - Precisei refazer? O que mudou no pedido:
+Não precisei refazer. Minha teoria da questão anterior foi comprovada, antes de traçar o plano, a IA faz a leitura do que contém nos testes e com isso traça o plano de ação de forma que não me entrega erros.
+Fico até inseguro de fazer o commit assim, pois sinto que o intuito seria explorar mais os erros que a IA iria cometer e corrigir com novos prompts, porém, não está ocorrendo, mas como estou seguindo de forma fiel o que foi proposto vou dar commit desse modo mesmo.
 
 ## Missão 4: livre
 

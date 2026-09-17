@@ -14,6 +14,7 @@ private:
     int idade;
     bool vivo;
     bool disponivel;
+    int experiencia;
 
 public:
     Astronauta(string cpf, string nome, int idade)
@@ -23,6 +24,7 @@ public:
         this->idade = idade;
         this->vivo = true;
         this->disponivel = true;
+        this->experiencia = 0;
     }
 
     string getCpf() const
@@ -48,6 +50,16 @@ public:
     bool estaDisponivel() const
     {
         return disponivel;
+    }
+
+    int getExperiencia() const
+    {
+        return experiencia;
+    }
+
+    void setExperiencia(int e)
+    {
+        experiencia = e;
     }
 
     void embarcar()
@@ -359,6 +371,13 @@ public:
             }
         }
 
+        for (int i = 0; i < voos[indiceVoo].getQuantidadeAstronautas(); i++)
+        {
+            string cpf = voos[indiceVoo].getCpf(i);
+            int indiceAstronauta = buscarAstronauta(cpf);
+            astronautas[indiceAstronauta].setExperiencia(astronautas[indiceAstronauta].getExperiencia() + 1);
+        }
+
         embarcarAstronautasDoVoo(indiceVoo);
 
         voos[indiceVoo].lancar();
@@ -600,6 +619,67 @@ public:
         }
     }
 
+    void relatorio()
+    {
+        int planejados = 0, emCurso = 0, sucesso = 0, explosao = 0;
+        for (int i = 0; i < (int)voos.size(); i++)
+        {
+            string e = voos[i].getEstado();
+            if (e == "planejado") planejados++;
+            else if (e == "em curso") emCurso++;
+            else if (e == "finalizado com sucesso") sucesso++;
+            else if (e == "finalizado com explosao") explosao++;
+        }
+
+        int total = (int)astronautas.size();
+        int vivos = 0, mortos = 0;
+        for (int i = 0; i < (int)astronautas.size(); i++)
+        {
+            if (astronautas[i].estaVivo()) vivos++;
+            else mortos++;
+        }
+
+        int melhorIdx = -1;
+        int melhorExperiencia = -1;
+        for (int i = 0; i < (int)astronautas.size(); i++)
+        {
+            int exp = astronautas[i].getExperiencia();
+            if (exp > melhorExperiencia)
+            {
+                melhorExperiencia = exp;
+                melhorIdx = i;
+            }
+        }
+
+        int finalizados = sucesso + explosao;
+
+        cout << "RELATORIO" << endl;
+        cout << "voos planejados: " << planejados << endl;
+        cout << "voos em curso: " << emCurso << endl;
+        cout << "voos finalizados com sucesso: " << sucesso << endl;
+        cout << "voos finalizados com explosao: " << explosao << endl;
+        cout << "astronautas cadastrados: " << total << endl;
+        cout << "astronautas vivos: " << vivos << endl;
+        cout << "astronautas mortos: " << mortos << endl;
+        if (melhorExperiencia <= 0)
+        {
+            cout << "astronauta mais experiente: (nenhum)" << endl;
+        }
+        else
+        {
+            cout << "astronauta mais experiente: " << astronautas[melhorIdx].getCpf() << " " << astronautas[melhorIdx].getNome() << " (voos lancados: " << melhorExperiencia << ")" << endl;
+        }
+        if (finalizados == 0)
+        {
+            cout << "taxa de sucesso: (nenhum voo finalizado)" << endl;
+        }
+        else
+        {
+            int taxa = (sucesso * 100) / finalizados;
+            cout << "taxa de sucesso: " << taxa << "%" << endl;
+        }
+    }
+
     void salvar(string nomeArquivo)
     {
         ofstream arquivo(nomeArquivo);
@@ -614,7 +694,8 @@ public:
                     << astronautas[i].getNome() << " "
                     << astronautas[i].getIdade() << " "
                     << astronautas[i].estaVivo() << " "
-                    << astronautas[i].estaDisponivel() << endl;
+                    << astronautas[i].estaDisponivel() << " "
+                    << astronautas[i].getExperiencia() << endl;
         }
         for (int i = 0; i < (int)voos.size(); i++)
         {
@@ -652,18 +733,26 @@ public:
 
             if (tokens[0] == "ASTRONAUTA")
             {
+                bool temExperiencia = (tokens.size() >= 7);
+                int base = temExperiencia ? 4 : 3;
                 string cpf = tokens[1];
-                int idade = stoi(tokens[tokens.size() - 3]);
-                bool vivo = stoi(tokens[tokens.size() - 2]) != 0;
-                bool disponivel = stoi(tokens[tokens.size() - 1]) != 0;
+                int idade = stoi(tokens[tokens.size() - base]);
+                bool vivo = stoi(tokens[tokens.size() - base + 1]) != 0;
+                bool disponivel = stoi(tokens[tokens.size() - base + 2]) != 0;
+                int experiencia = 0;
+                if (temExperiencia)
+                {
+                    experiencia = stoi(tokens[tokens.size() - 1]);
+                }
                 string nome = "";
-                for (int i = 2; i < (int)tokens.size() - 3; i++)
+                for (int i = 2; i < (int)tokens.size() - base; i++)
                 {
                     if (i > 2) nome += " ";
                     nome += tokens[i];
                 }
                 Astronauta a(cpf, nome, idade);
                 a.definirEstado(vivo, disponivel);
+                a.setExperiencia(experiencia);
                 tempAstronautas.push_back(a);
             }
             else if (tokens[0] == "VOO")
@@ -781,6 +870,10 @@ int main()
             string cpf;
             cin >> cpf;
             agencia.historico(cpf);
+        }
+        else if (comando == "RELATORIO")
+        {
+            agencia.relatorio();
         }
         else if (comando == "SALVAR")
         {
