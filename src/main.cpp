@@ -198,6 +198,19 @@ private:
         return -1;
     }
 
+    int contarConquistas(string cpf) const
+    {
+        int count = 0;
+        for (int i = 0; i < (int)voos.size(); i++)
+        {
+            if (voos[i].getEstado() == "finalizado com sucesso" && voos[i].temAstronauta(cpf))
+            {
+                count++;
+            }
+        }
+        return count;
+    }
+
     void embarcarAstronautasDoVoo(int indiceVoo)
     {
         for (int i = 0; i < voos[indiceVoo].getQuantidadeAstronautas(); i++)
@@ -369,6 +382,31 @@ public:
                 cout << "ERRO: astronauta " << cpf << " esta indisponivel" << endl;
                 return;
             }
+        }
+
+        bool temComandante = false;
+        bool existeComandantePossivel = false;
+        for (int i = 0; i < (int)astronautas.size(); i++)
+        {
+            if (contarConquistas(astronautas[i].getCpf()) >= 2)
+            {
+                existeComandantePossivel = true;
+                break;
+            }
+        }
+        for (int i = 0; i < voos[indiceVoo].getQuantidadeAstronautas(); i++)
+        {
+            string cpf = voos[indiceVoo].getCpf(i);
+            if (contarConquistas(cpf) >= 2)
+            {
+                temComandante = true;
+                break;
+            }
+        }
+        if (!temComandante && existeComandantePossivel)
+        {
+            cout << "ERRO: voo " << codigo << " nao possui comandante" << endl;
+            return;
         }
 
         for (int i = 0; i < voos[indiceVoo].getQuantidadeAstronautas(); i++)
