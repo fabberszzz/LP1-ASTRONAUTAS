@@ -37,10 +37,82 @@ Fiz o desenho no paint.
 
 ## Missão 1: LISTAR_ASTRONAUTAS e HISTORICO
 
+- Primeira mensagem (o pedido do plano):
+Este programa em C++11 controla astronautas e voos de uma agência espacial.
+Ele lê comandos da entrada padrão.
+As classes Astronauta, Voo e Agencia estão em src/main.cpp.
+Os testes em testes/parte1 passam.
+
+Quero dois comandos novos: LISTAR_ASTRONAUTAS e HISTORICO cpf.
+
+LISTAR_ASTRONAUTAS mostra todos os astronautas em três grupos, na ordem de cadastro dentro de cada grupo.
+
+No grupo disponiveis entram os vivos que não estão em nenhum voo em curso.
+
+No grupo em voo entram os vivos que estão em um voo em curso, com o código desse voo.
+
+No grupo mortos entram os mortos.
+
+Grupo vazio mostra (nenhum).
+
+Exemplo:
+
+LISTA DE ASTRONAUTAS
+== disponiveis ==
+333 Carla Souza (28 anos)
+== em voo ==
+111 Ana Maria (30 anos) - voo 20
+== mortos ==
+222 Bruno Costa (35 anos)
+
+HISTORICO cpf mostra os voos dos quais o astronauta participou, com o estado atual de cada um, na ordem de cadastro dos voos.
+
+Participou significa que o voo foi lançado com ele a bordo.
+
+Voo só planejado não aparece.
+
+Sem voos:
+(nenhum voo)
+
+CPF desconhecido:
+ERRO: astronauta 999 nao cadastrado
+
+Exemplo:
+
+HISTORICO DE 111 Ana Maria
+voo 10: finalizado com sucesso
+voo 20: em curso
+
+Não mude nenhum comando que já existe nem a saída deles.
+
+Não use nada fora da biblioteca padrão.
+
+Vou conferir com:
+
+bash testes/testar.sh missao1
+
+e depois:
+
+bash testes/testar.sh parte1
+
+Antes de editar, me diga quais arquivos e quais métodos você vai criar ou alterar, e por quê.
+
 - O plano que a IA apresentou, resumido:
+Arquivo modificado: apenas `src/main.cpp`, onde todas as classes já estão.
+Métodos novos na classe `Agencia`:
+`void listarAstronautas()` — agrupa astronautas em três categorias (disponiveis, em voo, mortos) e imprime no formato pedido.
+`void historico(string cpf)` — lista os voos lançados em que o astronauta participou, com o estado atual de cada um.
+Métodos alterados em `main()`: adição do tratamento dos comandos `LISTAR_ASTRONAUTAS` e `HISTORICO cpf`.
+Por que não criar novas classes: a `Agencia` já tem os vetores e métodos de busca necessários; as duas funcionalidades são extensões naturais dela.
+
 - Mudei algo no plano antes de liberar?
+Após a leitura do plano, assim como consta no resumo, achei bem coerente e correto o plano traçado pela IA, por conta disso, foi permitido que ela executasse o plano da maneira original, sem alterações.
+
 - Resultado de `testar.sh missao1` e de `testar.sh parte1`:
+missao1: Os dois testes passaram corretamente.
+parte1: Todos os testes passaram corretamente.
 - Precisei refazer? O que mudou no pedido:
+Mesmo usando um modelo gratuito com foco em tarefas financeiras, sendo de uma empresa chamada InclusionAI, que é desconhecida para mim, a IA conseguiu aplicar o plano dela e logo no primeiro teste tudo deu OK. Talvez ela tenha acessado os arquivos de teste e visto o que seria necessário para que não acontecesse nenhum erro. Ou talvez seja algo muito simples e qualquer IA atualmente seria capaz de fazer.
 
 ## Missão 2: SALVAR e CARREGAR
 
