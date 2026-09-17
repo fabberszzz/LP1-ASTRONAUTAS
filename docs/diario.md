@@ -28,13 +28,15 @@ Fiz o desenho no paint.
 ## Primeiro contato: revisão sem editar
 
 - As três melhorias que a IA sugeriu, em uma linha cada:
-- A que escolhi e por quê:
-- O que mudou no código, e se os seis testes continuaram passando:
-- O que entendi que não sabia antes:
+1. Getters sem const - todos os métodos que só leem o objeto deveriam ser marcados como const;
+2. Duplicação de lógica entre lancarVoo, explodirVoo e finalizarVoo;
+3. Using namespace std; no arquivo de cabeçalho;
+- A que escolhi e por quê: Escolhi a primeira porque era a mais simples de fazer. É só colocar a palavra const no final dos métodos que só leem dados, sem mudar nada mais. Depois fiz a segunda também, porque percebi que lancarVoo, explodirVoo e finalizarVoo faziam a mesma coisa: um loop para olhar cada astronauta do voo e fazer alguma ação. Então criei três métodos privados novos — embarcarAstronautasDoVoo, morrerAstronautasDoVoo e desembarcarAstronautasDoVoo — cada um com um loop que faz uma ação específica. Os três métodos principais (lancarVoo, explodirVoo e finalizarVoo) chamam o método certo em vez de repetir o loop. A terceira sugestão não fiz porque trocar o using namespace std mexeria em tudo e tinha medo de quebrar.
+- O que mudou no código, e se os seis testes continuaram passando: Coloquei const nos 13 métodos que só leem dados (5 da Astronauta, 5 da Voo e 2 buscadores privados da Agencia). Depois criei três métodos privados simples: embarcarAstronautasDoVoo, morrerAstronautasDoVoo e desembarcarAstronautasDoVoo, cada um com um loop que itera pelos astronautas do voo e faz uma ação. O lancarVoo chama o primeiro, o explodirVoo chama o segundo, e o finalizarVoo chama o terceiro. Isso tirou o loop repetido de lancarVoo, explodirVoo e finalizarVoo. O programa continuou compilando sem erros e os seis testes passaram igual antes.
+- O que entendi que não sabia antes: Antes não fazia ideia do que const fazia nos métodos. Agora sei que const significa "este método não vai mudar nada no objeto". É como uma promessa pro compilador: "eu só leio, não mexo". Isso é bom porque se alguém tentar usar o método num objeto que não pode mudar, o compilador já avisa. Também aprendi que quando vários métodos fazem a mesma coisa com mudanças só no fim, é melhor criar métodos separados com nomes claros que descrevem o que fazem, em vez de repetir o mesmo loop. Assim fica mais fácil de ler e de manter.
 
 ## Missão 1: LISTAR_ASTRONAUTAS e HISTORICO
 
-- Primeira mensagem (o pedido do plano):
 - O plano que a IA apresentou, resumido:
 - Mudei algo no plano antes de liberar?
 - Resultado de `testar.sh missao1` e de `testar.sh parte1`:

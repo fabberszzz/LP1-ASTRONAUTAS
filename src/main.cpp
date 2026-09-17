@@ -23,27 +23,27 @@ public:
         this->disponivel = true;
     }
 
-    string getCpf()
+    string getCpf() const
     {
         return cpf;
     }
 
-    string getNome()
+    string getNome() const
     {
         return nome;
     }
 
-    int getIdade()
+    int getIdade() const
     {
         return idade;
     }
 
-    bool estaVivo()
+    bool estaVivo() const
     {
         return vivo;
     }
 
-    bool estaDisponivel()
+    bool estaDisponivel() const
     {
         return disponivel;
     }
@@ -82,27 +82,27 @@ public:
         this->estado = "planejado";
     }
 
-    int getCodigo()
+    int getCodigo() const
     {
         return codigo;
     }
 
-    string getEstado()
+    string getEstado() const
     {
         return estado;
     }
 
-    int getQuantidadeAstronautas()
+    int getQuantidadeAstronautas() const
     {
         return (int)cpfs.size();
     }
 
-    string getCpf(int posicao)
+    string getCpf(int posicao) const
     {
         return cpfs[posicao];
     }
 
-    bool temAstronauta(string cpf)
+    bool temAstronauta(string cpf) const
     {
         for (int i = 0; i < (int)cpfs.size(); i++)
         {
@@ -154,7 +154,7 @@ private:
     vector<Astronauta> astronautas;
     vector<Voo> voos;
 
-    int buscarAstronauta(string cpf)
+    int buscarAstronauta(string cpf) const
     {
         for (int i = 0; i < (int)astronautas.size(); i++)
         {
@@ -166,7 +166,7 @@ private:
         return -1;
     }
 
-    int buscarVoo(int codigo)
+    int buscarVoo(int codigo) const
     {
         for (int i = 0; i < (int)voos.size(); i++)
         {
