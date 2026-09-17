@@ -117,10 +117,48 @@ Mesmo usando um modelo gratuito com foco em tarefas financeiras, sendo de uma em
 ## Missão 2: SALVAR e CARREGAR
 
 - Primeira mensagem:
+Este programa em C++11 controla astronautas e voos de uma agência espacial. Ele lê comandos da entrada padrão. As classes Astronauta, Voo e Agencia estão em src/main.cpp. Os testes em testes/parte1 e o restante da Parte 1 estão funcionando corretamente.
+
+Quero adicionar dois comandos novos:
+1. SALVAR nome_do_arquivo: grava todos os dados atuais em um arquivo de texto e imprime "OK: dados salvos em nome_do_arquivo". Se não conseguir abrir o arquivo para escrita, imprime "ERRO: nao foi possivel salvar em nome_do_arquivo".
+2. CARREGAR nome_do_arquivo: substitui todos os dados atuais pelos dados do arquivo e imprime "OK: dados carregados de nome_do_arquivo". Se o arquivo não existir, imprime "ERRO: nao foi possivel carregar de nome_do_arquivo", e os dados atuais devem continuar exatamente como estavam antes da tentativa.
+
+O formato do arquivo de salvamento deve ser texto e garantir que, ao carregar, todos os dados sejam perfeitamente reconstruídos: astronautas (incluindo estados de vivo e disponível) e voos (incluindo estado atual e lista de CPFs).
+
+Não mude nenhum comando que já existe nem a saída deles. Não use bibliotecas fora da biblioteca padrão.
+
+Vou conferir o resultado com "bash testes/testar.sh missao2" e depois com "bash testes/testar.sh parte1".
+
+Antes de editar qualquer arquivo, me diga quais arquivos e quais métodos você vai criar ou alterar, explique o formato escolhido para salvar os dados no arquivo de texto, e explique como o programa vai reconstruir os objetos ao carregar.
+
 - O plano, resumido:
+Arquivo modificado: apenas `src/main.cpp`, onde todas as classes já estão.
+Métodos novos na classe `Agencia`:
+`void salvar(string nomeArquivo)` — abre o arquivo para escrita, grava cada astronauta e cada voo em linhas de texto, e imprime a mensagem de sucesso ou erro.
+`void carregar(string nomeArquivo)` — abre o arquivo, lê linha por linha, constrói vetores temporários de astronautas e voos, e só troca os vetores atuais no final, garantindo que se o arquivo não existir os dados originais permaneçam intactos.
+Método novo na classe `Astronauta`:
+`void definirEstado(bool v, bool d)` — permite restaurar vivo/disponível ao carregar, já que o construtor sempre inicializa ambos como true.
+Métodos alterados em `main()`: adição do tratamento dos comandos `SALVAR` e `CARREGAR`.
+Por que não criar novas classes: a `Agencia` já tem os vetores e métodos necessários; salvar e carregar são extensões naturais dela.
+
 - O formato do arquivo (cole cinco linhas do `dados_teste.txt`):
+O arquivo usa três tipos de linha:
+  - `ASTRONAUTA cpf nome idade vivo disponibil` — um astronauta por linha, com nome (que pode ter espaços) entre o CPF e os três últimos tokens booleanos.
+  - `VOO codigo estado` — um voo por linha, com o estado completo (que pode ter espaços, ex.: "finalizado com sucesso").
+  - `VOO_CPFS codigo cpf` — um CPF por linha, associado ao código do voo.
+Exemplo do `dados_teste.txt`:
+ASTRONAUTA 111 Ana Maria 30 1 1
+ASTRONAUTA 222 Bruno Costa 35 0 0
+VOO 10 finalizado com sucesso
+VOO_CPFS 10 111
+VOO 20 finalizado com explosao
+
 - Resultado de `testar.sh missao2` e de `testar.sh parte1`:
+missao2: Os três testes passaram corretamente.
+parte1: Todos os testes passaram corretamente.
+
 - Precisei refazer? O que mudou no pedido:
+O plano da IA já estava correto desde a primeira versão, apenas tive um bug de implementação na leitura do estado com espaços. Importante citar que, por algum motivo, a IA, de forma automática, fica compilando e testando a todo momento, e só finalizando o prompt que eu enviei quando está 100% finalizado e retornando OK nos testes da missão 2.
 
 ## Missão 3: RELATORIO
 
